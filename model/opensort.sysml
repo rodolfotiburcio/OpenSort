@@ -10,7 +10,7 @@ package OpenSort {
 
     item def PackageDetected;
     item def QrResult {
-        doc /* Una lectura válida entrega el ID del paquete. Un fallo de
+        doc /* Una lectura válida entrega el ID del paquete. La ausencia de QR, un fallo de
                lectura o un timeout se trata como QR ilegible. */
         attribute readable : Boolean;
         attribute packageId : String [0..1];
@@ -91,7 +91,7 @@ package OpenSort {
         action queryManifest;
         then decide manifestDecision;
             if manifestAvailable then checkRoute;
-            else pendingManifestFailurePolicy;
+            else selectReview;
 
         action checkRoute {
             doc /* Se requiere un ID conocido y una ruta para su destino. */
@@ -102,7 +102,11 @@ package OpenSort {
 
         action selectDestinationExit;
         then selectedExit;
-        action selectReview;
+        action selectReview {
+            doc /* Sin QR, QR ilegible, manifiesto no encontrado o no disponible,
+                   ID desconocido o destino sin ruta: enviar a revisión.
+                   La salida de revisión también requiere confirmación física. */
+        }
         then selectedExit;
 
         merge selectedExit;
@@ -125,10 +129,5 @@ package OpenSort {
         }
         then done;
 
-        action pendingManifestFailurePolicy {
-            doc /* Caso abierto. Termina aquí el flujo documentado para esta
-                   rama. La respuesta operativa de la estación sigue por definir. */
-        }
-        then done;
     }
 }

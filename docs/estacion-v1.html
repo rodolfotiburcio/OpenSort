@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenSort V1 · Estación de banco</title>
+<style>
+:root { color-scheme: light; font-family: system-ui,sans-serif; color:#17273d; background:#edf2f6; }
+* { box-sizing:border-box; }
+body { margin:0; }
+header { background:#13283f; color:#fff; padding:clamp(1.5rem,5vw,4rem) max(1rem,calc((100vw - 69rem)/2)); }
+h1 { font-size:clamp(2rem,5vw,3.8rem); margin:.25rem 0; line-height:1.08; }
+header p { margin:.75rem 0 0; color:#c7d9e8; }
+main { max-width:71rem; margin:auto; padding:1rem; display:grid; gap:1rem; }
+@media(min-width:62rem) { main { grid-template-columns: 2fr 1fr; align-items:start; } }
+section { background:white; border:1px solid #d8e2ec; border-radius:1rem; padding:1rem; min-width:0; }
+h2 { margin:.25rem 0 1rem; }
+svg { display:block; width:100%; height:auto; background:#f8fafc; border-radius:.65rem; }
+svg text { text-anchor:middle; fill:#142a43; font-size:15px; font-weight:650; }
+svg g rect,svg g path { fill:#e9f4ff; stroke:#34709c; stroke-width:1.5; }
+svg g.decision path { fill:#e0f4ed; stroke:#247661; }
+svg g.warning rect { fill:#fff0db; stroke:#9c6223; }
+svg .edge { fill:none; stroke:#597388; stroke-width:1.7; marker-end:url(#arrow); }
+svg .label { font-size:13px; }
+.diagram { overflow-x:auto; }
+.diagram svg { min-width:34rem; }
+summary { cursor:pointer; padding:.8rem .25rem; font-weight:700; }
+details { border-top:1px solid #d8e2ec; }
+details p { margin:.1rem .25rem .8rem; }
+a { color:#15547e; }
+footer { max-width:71rem; margin:auto; padding:0 1rem 2rem; }
+</style>
+</head>
+<body>
+<header><strong>OpenSort IIoT · V1</strong><h1>Estación de banco</h1><p>Flujo de clasificación e interfaces del controlador ESP32</p></header>
+<main>
+<section aria-labelledby="cycle"><h2 id="cycle">Ciclo de un paquete</h2>
+<div class="diagram" tabindex="0" role="region" aria-label="Diagrama desplazable horizontalmente">
+<svg viewBox="0 0 720 1120" role="img" aria-labelledby="diagram-title diagram-desc">
+<title id="diagram-title">Flujo de clasificación de OpenSort</title>
+<desc id="diagram-desc">Un paquete sin QR, con QR ilegible, ID desconocido o sin ruta se envía a revisión. Si el manifiesto no se encuentra o no está disponible, también se envía a revisión. Tanto la salida de destino como la de revisión deben confirmarse. Una salida distinta o un timeout bloquea la admisión.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4 0 8Z" fill="#597388"/></marker></defs>
+<path class="edge" d="M360 54V78"/>
+<path class="edge" d="M360 118V142"/>
+<path class="edge" d="M360 182V208"/>
+<path class="edge" d="M360 272V300"/><text class="label" x="376" y="290">Sí</text>
+<path class="edge" d="M263 240H112V616"/><text class="label" x="223" y="230">No</text>
+<path class="edge" d="M360 340V366"/>
+<path class="edge" d="M360 430V458"/><text class="label" x="376" y="447">Sí</text>
+<path class="edge" d="M263 398H64V616"/><text class="label" x="220" y="388">No</text>
+<path class="edge" d="M360 498V524"/>
+<path class="edge" d="M360 588V616"/><text class="label" x="376" y="605">Sí</text>
+<path class="edge" d="M263 556H160V616"/><text class="label" x="220" y="546">No</text>
+<path class="edge" d="M360 656V686"/>
+<path class="edge" d="M112 656V706H261"/>
+<path class="edge" d="M360 726V750"/>
+<path class="edge" d="M360 790V814"/>
+<path class="edge" d="M360 854V880"/>
+<path class="edge" d="M263 912H222V984"/><text class="label" x="216" y="903">Sí</text>
+<path class="edge" d="M457 912H498V984"/><text class="label" x="526" y="903">No / timeout</text>
+<path class="edge" d="M222 1024V1082H261"/>
+<path class="edge" d="M498 1024V1082H459"/><g class="" transform="translate(360 34)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Inicio</text></g>
+<g class="" transform="translate(360 98)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Detectar paquete</text></g>
+<g class="" transform="translate(360 162)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Leer QR</text></g>
+<g class="decision" transform="translate(360 240)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿QR legible?</text></g>
+<g class="" transform="translate(360 320)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Consultar manifiesto</text></g>
+<g class="decision" transform="translate(360 398)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿Disponible?</text></g>
+<g class="" transform="translate(360 478)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Comprobar ruta</text></g>
+<g class="decision" transform="translate(360 556)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿Hay ruta?</text></g>
+<g class="" transform="translate(360 636)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Elegir salida de destino</text></g>
+<g class="" transform="translate(112 636)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Elegir revisión</text></g>
+<g class="" transform="translate(360 706)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Convergen las rutas</text></g>
+<g class="" transform="translate(360 770)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Ordenar desvío</text></g>
+<g class="" transform="translate(360 834)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Esperar confirmación</text></g>
+<g class="decision" transform="translate(360 912)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿Coincide la salida?</text></g>
+<g class="" transform="translate(222 1004)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Registrar confirmación</text></g>
+<g class="warning" transform="translate(498 1004)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Bloquear admisión</text></g>
+<g class="" transform="translate(360 1082)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Fin del ciclo</text></g>
+</svg></div>
+</section>
+<section aria-labelledby="interfaces"><h2 id="interfaces">Cinco interfaces</h2>
+<details><summary>Sensor de entrada</summary><p>Sensor → ESP32</p><p><code>PackageDetected</code></p><p>Abre un ciclo si la estación está libre.</p></details>
+<details><summary>Lector QR</summary><p>Lector → ESP32</p><p><code>QrResult</code></p><p>Legibilidad e identificador del paquete, cuando está disponible. Sin QR o con lectura fallida, se envía a revisión.</p></details>
+<details><summary>Manifiesto del lote</summary><p>ESP32 ↔ Fuente del manifiesto</p><p><code>DestinationQuery / DestinationResult</code></p><p>Consulta por identificador. Devuelve destino, identificador desconocido o indisponibilidad. Si el manifiesto no se encuentra o no está disponible, se envía a revisión.</p></details>
+<details><summary>Desviador</summary><p>ESP32 → Desviador</p><p><code>DivertOrder</code></p><p>Indica la salida esperada.</p></details>
+<details><summary>Sensores de salida</summary><p>Sensores → ESP32</p><p><code>ExitObservation</code></p><p>Indica la salida observada, incluida la de revisión.</p></details>
+<p>La orden de desvío indica la salida esperada. Los sensores reportan por dónde pasó el paquete.</p>
+</section>
+</main>
+<footer><p>Vista elaborada a partir de <a href="https://github.com/rodolfotiburcio/OpenSort/blob/model/opensort-v1-sysml/model/opensort.sysml">model/opensort.sysml</a>. Actualiza la vista cuando cambie el modelo.</p></footer>
+</body>
+</html>
