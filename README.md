@@ -6,13 +6,16 @@ La V0 simula una estación con tres salidas de destino y una de revisión. Proce
 
 ## Ejecutar
 
-Desde la raíz, con Python 3.10 o superior y sin dependencias externas:
+El proyecto usa [uv](https://docs.astral.sh/uv/) para gestionar el entorno y las dependencias. Desde la raíz del repositorio:
 
 ```bash
-python -m opensort
-python -m opensort --scenario wrong-exit
-python -m unittest discover -s tests -v
+uv sync                                  # crea .venv e instala dependencias (incluye pytest)
+uv run opensort                          # ejecuta la demostración
+uv run opensort --scenario wrong-exit
+uv run pytest -v                         # ejecuta las pruebas
 ```
+
+El paquete no tiene dependencias externas en tiempo de ejecución; pytest solo se usa para desarrollo. Requiere Python 3.10 o superior (uv lo descarga si hace falta). También funciona `uv run python -m opensort`.
 
 La demostración emite un objeto JSON por evento. En el escenario predeterminado se confirman dos paquetes, tres pasan a revisión y el siguiente causa un bloqueo por falta de confirmación. El último paquete del lote queda pendiente. El segundo escenario sustituye el timeout por una salida incorrecta.
 
