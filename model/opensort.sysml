@@ -9,6 +9,15 @@ package OpenSort {
     }
 
     item def PackageDetected;
+    item def ResetRequested {
+        doc /* Nueva pulsación tras inspeccionar y despejar la estación.
+               No se conserva una solicitud rechazada ni una pulsación previa
+               al bloqueo. Mantener pulsado no genera solicitudes adicionales. */
+    }
+    item def CycleConfirmed;
+    item def CycleFailed;
+    port def ResetSignal { out item request : ResetRequested; }
+
     item def QrResult {
         doc /* Una lectura válida entrega el ID del paquete. La ausencia de QR, un fallo de
                lectura o un timeout se trata como QR ilegible. */
@@ -49,6 +58,7 @@ package OpenSort {
                filtrado, protocolo del lector, mando del desviador, ubicación
                del manifiesto y tiempos de lectura, posicionamiento y salida. */
         part entrySensor { port signal : EntrySignal; }
+        part resetButton { port signal : ResetSignal; }
         part qrReader { port signal : QrSignal; }
         part manifestSource { port access : ~ManifestAccess; }
         part diverter { port signal : ~DivertSignal; }
@@ -58,6 +68,8 @@ package OpenSort {
         }
         part controller {
             doc /* Controlador previsto: ESP32. */
+            port reset : ~ResetSignal;
+            exhibit state operatingStates : StationStates;
             port entry : ~EntrySignal;
             port qr : ~QrSignal;
             port manifest : ManifestAccess;
@@ -65,6 +77,7 @@ package OpenSort {
             port exitObservation : ~ExitSignal;
         }
 
+        connect resetButton.signal to controller.reset;
         connect entrySensor.signal to controller.entry;
         connect qrReader.signal to controller.qr;
         connect controller.manifest to manifestSource.access;
@@ -125,9 +138,52 @@ package OpenSort {
 
         action blockAdmission {
             doc /* Registra la discrepancia o el timeout y bloquea la
-                   admisión del siguiente paquete. Rearme por definir. */
+                   admisión del siguiente paquete. El intento termina, pero la estación
+                   permanece bloqueada hasta un rearme aceptado en StationStates. */
         }
         then done;
 
     }
+    state def StationStates {
+        doc /* Estados lógicos de operación; no representan la secuencia de arranque.
+               PackageCycle produce CycleConfirmed al confirmar la salida y
+               CycleFailed ante salida incorrecta o timeout.
+               El adaptador del controlador entrega los eventos de entrada y rearme.
+               Los valores de los sensores se muestrean al recibir cada solicitud.
+               Su conexión detallada al hardware queda pendiente.
+               Fuera de blocked, el rearme se ignora y no se almacena. */
+        in attribute entrySensorClear : Boolean;
+        in attribute exitSensorsClear : Boolean;
+
+        entry; then available;
+
+        state available;
+        accept PackageDetected then processing;
+
+        state processing;
+        accept CycleConfirmed then available;
+        accept CycleFailed then blocked;
+
+        state blocked {
+            doc /* Admisión deshabilitada. El operador inspecciona y retira
+                   paquetes antes de pulsar. Sensores libres no demuestran
+                   por sí solos que el espacio entre sensores esté vacío. */
+        }
+        accept ResetRequested
+            if entrySensorClear and exitSensorsClear
+            do action recordAcceptedReset {
+                doc /* Registrar el rearme asociado al intento fallido,
+                       conservar su resultado y habilitar la admisión.
+                       No ordenar movimiento ni iniciar otro ciclo. */
+            }
+            then available;
+        accept ResetRequested
+            if not (entrySensorClear and exitSensorsClear)
+            do action recordRejectedReset {
+                doc /* Registrar rechazo y conservar bloqueo. Tras despejar
+                       la estación se requiere una nueva pulsación. */
+            }
+            then blocked;
+    }
+
 }
