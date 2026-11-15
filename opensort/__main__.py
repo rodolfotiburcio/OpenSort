@@ -10,7 +10,18 @@ from .simulator import Package, Station
 def main() -> None:
     parser = argparse.ArgumentParser(description="Simula un lote OpenSort.")
     parser.add_argument("--scenario", choices=["demo", "wrong-exit"], default="demo")
+    parser.add_argument("--web", action="store_true", help="Abre el servidor de simulación 2D local")
+    parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
+    if args.web:
+        from .web import serve
+        if not 0 <= args.port <= 65535:
+            parser.error("El puerto debe estar entre 0 y 65535")
+        try:
+            serve(args.port)
+        except OSError as error:
+            parser.exit(1, f"No se pudo iniciar el servidor: {error}. Prueba --port 8001.\n")
+        return
 
     station = Station(
         manifest={

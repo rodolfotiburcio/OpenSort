@@ -5,13 +5,13 @@
 ## Hito actual
 
 V0 — Simulador de una estación logística implementado y validado localmente.
-V1 — Modelo lógico de la estación de banco y visualización HTML integrados en `main` mediante el PR #2 (commit `2915aa4`). Los estados y el rearme están integrados mediante el PR #3 (`6ce304b`); la pizarra HTML navegable y la corrección del relleno de las flechas, mediante el PR #4 (`b952453`). La implementación física y el rearme en código siguen pendientes.
+V1 — Modelo lógico de la estación de banco y visualización HTML integrados en `main` mediante el PR #2 (commit `2915aa4`). Los estados y el rearme están integrados mediante el PR #3 (`6ce304b`); la pizarra HTML navegable y la corrección del relleno de las flechas, mediante el PR #4 (`b952453`). La implementación física sigue pendiente. La rama `feature/simulacion-2d` añade el motor persistente, el rearme y la vista 2D local; todavía no están integrados en `main`.
 
 ## Último resultado verificado
 
 El lote de demostración de V0 confirma salidas, envía paquetes a revisión y bloquea la admisión ante una discrepancia. Las pruebas automatizadas cubren confirmación, causas de revisión, timeout, salida incorrecta y reprocesamiento. Consulta los [comandos de reproducción](../README.md#ejecutar).
 
-En la revisión local pasaron las cuatro pruebas con `python3 -m unittest discover -s tests -v` y se verificó la demo `python3 -m opensort --scenario wrong-exit`. El bloqueo actual solo detiene el lote de una llamada a `Station.run()`; no persiste entre llamadas y todavía no exige rearme para volver a procesar paquetes.
+En la revisión local pasaron las cuatro pruebas con `python3 -m unittest discover -s tests -v` y se verificó la demo `python3 -m opensort --scenario wrong-exit`. Esa revisión correspondía a V0. En `feature/simulacion-2d`, el bloqueo ya persiste entre llamadas y requiere rearme para volver a admitir paquetes.
 
 El usuario confirmó que el [modelo SysML](../model/opensort.sysml) es correcto. El modelo documenta seis interfaces: detección de entrada, resultado QR, consulta y respuesta del manifiesto, orden de desvío, confirmación de salida y solicitud de rearme. La [vista HTML](estacion-v1.html) representa el ciclo, las interfaces y los estados de la estación; su actualización es manual.
 
@@ -32,9 +32,11 @@ La [pizarra navegable](pizarra-v1.html) reúne componentes, ciclo, estados y dic
 
 ## Siguiente tarea
 
-Implementar y probar en el simulador los estados persistentes de la estación (disponible, procesando y bloqueada) y el rearme definido en el modelo V1.
+Revisar localmente la simulación 2D con `uv run opensort --web` (o `--port 8001` si el puerto está ocupado), validar la experiencia y preparar la integración de `feature/simulacion-2d` en `main`.
 
-Criterio de cierre: provocar un fallo, impedir la admisión de otro paquete incluso en una nueva llamada, rechazar el rearme con algún sensor ocupado, aceptar una nueva pulsación con todos los sensores libres y procesar otro paquete. Verificar también que una pulsación mantenida o anterior al bloqueo no produce rearme automático, que fuera del bloqueo se ignora el rearme y que se conserva el resultado fallido sin iniciar movimiento al rearmar.
+La rama incorpora estados persistentes, cola, animación, sensores sintéticos, pausa y velocidad, fallos de salida y rearme mediante nueva pulsación. Once pruebas automatizadas cubren las reglas y la API local. La revisión automatizada en Chrome verificó las rutas A/B/C, revisión, timeout, rechazo y aceptación del rearme y pausa posterior, sin errores JavaScript ni desbordamiento horizontal en móvil. La simulación usa biblioteca estándar de Python y recursos web incluidos en el paquete, sin dependencias de ejecución adicionales.
+
+Criterio de revisión: provocar un fallo, comprobar que la cola no se admite, rechazar rearme antes de inspeccionar o con sensores ocupados, aceptar otra pulsación tras despejar y reanudar explícitamente la alimentación. El historial debe conservar el fallo. La validación física y la sintaxis SysML siguen pendientes.
 
 ## Pendientes posteriores
 
