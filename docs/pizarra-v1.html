@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenSort · Pizarra del modelo V1</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,system-ui,sans-serif;color:#1c3044;background:#f6f8fb}header{position:fixed;inset:0 0 auto;z-index:2;background:#fff;border-bottom:1px solid #dde5ed;padding:14px 22px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}h1{font-size:19px;margin:0}header small{display:block;color:#68798b;margin-top:3px}nav,.tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}button{border:1px solid #d6e0ea;border-radius:7px;background:white;padding:9px 12px;cursor:pointer;color:#23415d;font:inherit;font-size:13px}button:hover,button:focus-visible{background:#e8f2ff;border-color:#5585b8}#viewport{position:fixed;inset:100px 0 32px;overflow:hidden;touch-action:none;cursor:grab;background-image:radial-gradient(#ccd7e3 1px,transparent 1px);background-size:24px 24px}#viewport.dragging{cursor:grabbing}#board{position:absolute;width:2720px;height:2460px;transform-origin:0 0}section{position:absolute;background:#fff;border:1px solid #cddbe8;border-radius:16px;padding:25px;box-shadow:0 8px 32px #233c5510}section h2{font-size:27px;letter-spacing:-.5px;margin:7px 0}section .sub{color:#64768a;font-size:16px;margin:0 0 20px;line-height:1.5}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:#3971a5}.structure{left:30px;top:30px;width:1130px;height:1040px}.cycle{left:1190px;top:30px;width:780px;height:1480px}.states{left:30px;top:1100px;width:1130px;height:1300px}.definitions{left:2000px;top:30px;width:690px;min-height:2110px}
+svg{display:block;width:100%;height:auto}svg text{text-anchor:middle;fill:#142a43;font-size:15px;font-weight:650}svg g rect{fill:#e9f4ff;stroke:#34709c;stroke-width:1.5}svg g.decision path{fill:#e0f4ed;stroke:#247661;stroke-width:1.5}svg g.warning rect{fill:#fff0db;stroke:#9c6223}svg .edge{fill:none;stroke:#597388;stroke-width:1.7;marker-end:url(#arrow)}svg .label{font-size:13px}svg .wire{fill:none;stroke:#497da7;stroke-width:2;marker-end:url(#wirearrow)}svg .node-title,svg .node-line,svg .wire-label{text-anchor:start}.node-title{font-size:18px}.node-line{font-size:13px;font-weight:400}.wire-label{font-size:13px;paint-order:stroke;stroke:white;stroke-width:6px}
+.note{padding:15px 18px;background:#fff8e9;border-left:3px solid #dba344;font-size:15px;line-height:1.6;margin-top:20px}.note strong{display:block}.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{border:1px solid #cde2d9;border-radius:9px;background:#f7fcf9;padding:15px;min-height:151px;overflow-wrap:anywhere}.card.enum{background:#f7f5ff;border-color:#d6ceef}.card.port{background:#f2f8ff;border-color:#ccdeef}.card small{font-size:11px;letter-spacing:1px;color:#607b70}.card h3{font-size:16px;margin:8px 0}.card p{font-size:13px;line-height:1.6;margin:2px 0}code{font-family:Consolas,monospace}table{border-collapse:collapse;width:100%;font-size:14px}td{padding:9px;border-bottom:1px solid #e0e7ee}footer{position:fixed;bottom:0;left:0;right:0;background:white;padding:7px 18px;font-size:12px;color:#586f85}a{color:#245e96}.inputs{background:#f5f8fb;padding:12px 15px;font-size:13px;line-height:1.7}.bridge{left:1190px;top:1540px;width:780px;height:860px}.bridge li{margin-bottom:16px;line-height:1.7}.badge{display:inline-block;background:#fff0cf;padding:4px 9px;border-radius:5px;font-size:12px}#zoom{min-width:48px;text-align:center;font-size:13px}
+</style></head><body>
+<header><div><h1>OpenSort <span style="color:#6e8296;font-weight:400">/ Pizarra V1</span></h1><small>Modelo completo desplegado · lectura y revisión</small></div>
+<nav aria-label="Ir a un diagrama"><button data-focus="structure">01 Componentes</button><button data-focus="cycle">02 Ciclo</button><button data-focus="states">03 Estados</button><button data-focus="definitions">04 Datos y puertos</button></nav>
+<div class="tools"><button id="minus" aria-label="Alejar">−</button><output id="zoom">100%</output><button id="plus" aria-label="Acercar">+</button><button id="fit">Ver todo</button><button id="actual">100%</button></div></header>
+<div id="viewport" tabindex="0" role="region" aria-label="Pizarra: arrastrar para mover, rueda para zoom, flechas del teclado para desplazar"><main id="board">
+<section class="structure" id="structure"><span class="eyebrow">01 · Part def</span><h2>BenchStation</h2><p class="sub">Siete componentes · seis interfaces · un paquete por ciclo</p><svg viewBox="0 0 1080 870" role="img" aria-label="Componentes y seis interfaces del controlador"><defs><marker id="wirearrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4 0 8Z" fill="#497da7"/></marker></defs>
+<g><rect x="390" y="310" width="300" height="245" rx="12" fill="#f0f6ff" stroke="#94b8df"/><text x="406" y="337" class="node-title">controller · ESP32</text><text x="406" y="363" class="node-line">reset : ~ResetSignal</text><text x="406" y="385" class="node-line">entry : ~EntrySignal</text><text x="406" y="407" class="node-line">qr : ~QrSignal</text><text x="406" y="429" class="node-line">manifest : ManifestAccess</text><text x="406" y="451" class="node-line">divert : DivertSignal</text><text x="406" y="473" class="node-line">exitObservation : ~ExitSignal</text><text x="406" y="495" class="node-line">operatingStates : StationStates</text></g>
+<g><rect x="30" y="40" width="300" height="100" rx="12" fill="#f0f6ff" stroke="#94b8df"/><text x="46" y="67" class="node-title">entrySensor</text><text x="46" y="93" class="node-line">signal : EntrySignal</text><text x="46" y="115" class="node-line">→ PackageDetected</text></g>
+<g><rect x="390" y="40" width="300" height="100" rx="12" fill="#f0f6ff" stroke="#94b8df"/><text x="406" y="67" class="node-title">qrReader</text><text x="406" y="93" class="node-line">signal : QrSignal</text><text x="406" y="115" class="node-line">→ QrResult</text></g>
+<g><rect x="750" y="40" width="300" height="100" rx="12" fill="#f0f6ff" stroke="#94b8df"/><text x="766" y="67" class="node-title">resetButton</text><text x="766" y="93" class="node-line">signal : ResetSignal</text><text x="766" y="115" class="node-line">→ ResetRequested · nueva pulsación</text></g>
+<g><rect x="30" y="690" width="300" height="100" rx="12" fill="#f0f6ff" stroke="#94b8df"/><text x="46" y="717" class="node-title">manifestSource</text><text x="46" y="743" class="node-line">access : ~ManifestAccess</text><text x="46" y="765" class="node-line">← DestinationQuery / → DestinationResult</text></g>
+<g><rect x="390" y="690" width="300" height="100" rx="12" fill="#f0f6ff" stroke="#94b8df"/><text x="406" y="717" class="node-title">diverter</text><text x="406" y="743" class="node-line">signal : ~DivertSignal</text><text x="406" y="765" class="node-line">← DivertOrder</text></g>
+<g><rect x="750" y="690" width="300" height="100" rx="12" fill="#f0f6ff" stroke="#94b8df"/><text x="766" y="717" class="node-title">exitSensors</text><text x="766" y="743" class="node-line">signal : ExitSignal</text><text x="766" y="765" class="node-line">→ ExitObservation · 4 salidas</text></g>
+<path class="wire" d="M180 140V220H430V310"/><text class="wire-label" x="230" y="210">entrada</text>
+<path class="wire" d="M540 140V310"/><text class="wire-label" x="552" y="210">lectura QR</text>
+<path class="wire" d="M900 140V220H650V310"/><text class="wire-label" x="730" y="210">rearme</text>
+<path class="wire" d="M430 555V625H180V690"/><text class="wire-label" x="210" y="615">consulta</text>
+<path class="wire" d="M195 690V648H455V555"/><text class="wire-label" x="220" y="673">respuesta</text>
+<path class="wire" d="M540 555V690"/><text class="wire-label" x="552" y="620">orden de desvío</text>
+<path class="wire" d="M900 690V625H650V555"/><text class="wire-label" x="735" y="615">salida observada</text>
+<text x="30" y="840" class="node-line">Conexiones lógicas. Pines, protocolos, polaridades y tiempos pendientes.</text></svg></section>
+<section class="cycle" id="cycle"><span class="eyebrow">02 · Action def</span><h2>PackageCycle</h2><p class="sub">Decisiones y caminos completos del ciclo de un paquete</p>
+<div class="inputs"><code>qrReadable · manifestAvailable · routeFound · exitMatches : Boolean</code><br>Las preguntas del diagrama representan estas condiciones, en ese orden.</div><svg viewBox="0 0 720 1120" role="img" aria-labelledby="diagram-title diagram-desc">
+<title id="diagram-title">Flujo de clasificación de OpenSort</title>
+<desc id="diagram-desc">Un paquete sin QR, con QR ilegible, ID desconocido o sin ruta se envía a revisión. Si el manifiesto no se encuentra o no está disponible, también se envía a revisión. Tanto la salida de destino como la de revisión deben confirmarse. Una salida distinta o un timeout bloquea la admisión.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4 0 8Z" fill="#597388"/></marker></defs>
+<path class="edge" d="M360 54V78"/>
+<path class="edge" d="M360 118V142"/>
+<path class="edge" d="M360 182V208"/>
+<path class="edge" d="M360 272V300"/><text class="label" x="376" y="290">Sí</text>
+<path class="edge" d="M263 240H112V616"/><text class="label" x="223" y="230">No</text>
+<path class="edge" d="M360 340V366"/>
+<path class="edge" d="M360 430V458"/><text class="label" x="376" y="447">Sí</text>
+<path class="edge" d="M263 398H64V616"/><text class="label" x="220" y="388">No</text>
+<path class="edge" d="M360 498V524"/>
+<path class="edge" d="M360 588V616"/><text class="label" x="376" y="605">Sí</text>
+<path class="edge" d="M263 556H160V616"/><text class="label" x="220" y="546">No</text>
+<path class="edge" d="M360 656V686"/>
+<path class="edge" d="M112 656V706H261"/>
+<path class="edge" d="M360 726V750"/>
+<path class="edge" d="M360 790V814"/>
+<path class="edge" d="M360 854V880"/>
+<path class="edge" d="M263 912H222V984"/><text class="label" x="216" y="903">Sí</text>
+<path class="edge" d="M457 912H498V984"/><text class="label" x="526" y="903">No / timeout</text>
+<path class="edge" d="M222 1024V1082H261"/>
+<path class="edge" d="M498 1024V1082H459"/><g class="" transform="translate(360 34)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Inicio</text></g>
+<g class="" transform="translate(360 98)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Detectar paquete</text></g>
+<g class="" transform="translate(360 162)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Leer QR</text></g>
+<g class="decision" transform="translate(360 240)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿QR legible?</text></g>
+<g class="" transform="translate(360 320)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Consultar manifiesto</text></g>
+<g class="decision" transform="translate(360 398)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿Disponible?</text></g>
+<g class="" transform="translate(360 478)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Comprobar ruta</text></g>
+<g class="decision" transform="translate(360 556)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿Hay ruta?</text></g>
+<g class="" transform="translate(360 636)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Elegir salida de destino</text></g>
+<g class="" transform="translate(112 636)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Elegir revisión</text></g>
+<g class="" transform="translate(360 706)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Convergen las rutas</text></g>
+<g class="" transform="translate(360 770)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Ordenar desvío</text></g>
+<g class="" transform="translate(360 834)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Esperar confirmación</text></g>
+<g class="decision" transform="translate(360 912)"><path d="M0 -32L97 0 0 32 -97 0Z"/><text dy=".35em">¿Coincide la salida?</text></g>
+<g class="" transform="translate(222 1004)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Registrar confirmación</text></g>
+<g class="warning" transform="translate(498 1004)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Bloquear admisión</text></g>
+<g class="" transform="translate(360 1082)"><rect x="-98" y="-20" width="196" height="40" rx="9"/><text dy=".35em">Fin del ciclo</text></g>
+</svg>
+<div class="note"><strong>Revisión no significa bloqueo.</strong>Una salida incorrecta o un timeout bloquea la admisión. El fin del ciclo no libera ese bloqueo.</div></section>
+<section class="states" id="states"><span class="eyebrow">03 · State def</span><h2>StationStates</h2><p class="sub">Estados de operación de <code>controller.operatingStates</code></p><svg viewBox="0 0 760 470" role="img" aria-labelledby="states-title states-desc">
+<title id="states-title">Disponible, procesando y bloqueada</title>
+<desc id="states-desc">Detectar un paquete pasa de disponible a procesando. Una salida confirmada vuelve a disponible. Una salida incorrecta o un timeout bloquea. Una nueva solicitud de rearme con todos los sensores libres vuelve a disponible; con sensores ocupados mantiene el bloqueo.</desc>
+<defs><marker id="state-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4 0 8Z" fill="#597388"/></marker></defs>
+<g transform="translate(290 60)"><rect x="-100" y="-25" width="200" height="50" rx="12"/><text dy=".35em">Disponible</text></g>
+<g transform="translate(290 220)"><rect x="-100" y="-25" width="200" height="50" rx="12"/><text dy=".35em">Procesando</text></g>
+<g class="warning" transform="translate(290 390)"><rect x="-100" y="-25" width="200" height="50" rx="12"/><text dy=".35em">Bloqueada</text></g>
+<g fill="none" stroke="#597388" stroke-width="2" marker-end="url(#state-arrow)">
+<path d="M290 85V195"/><path d="M390 220H470V60H390"/>
+<path d="M290 245V365"/><path d="M190 390H45V60H190"/>
+<path d="M390 390H710V450H290V415"/>
+</g>
+<text x="290" y="135"><tspan x="290">Detectar</tspan><tspan x="290" dy="20">paquete</tspan></text>
+<text x="560" y="130"><tspan x="560">Salida</tspan><tspan x="560" dy="20">confirmada</tspan></text>
+<text x="290" y="295"><tspan x="290">Salida incorrecta</tspan><tspan x="290" dy="20">o timeout</tspan></text>
+<text x="115" y="180"><tspan x="115">Rearme</tspan><tspan x="115" dy="20">aceptado</tspan></text>
+<text x="550" y="370"><tspan x="550">Rearme rechazado:</tspan><tspan x="550" dy="20">sensores ocupados</tspan></text>
+</svg>
+<table aria-label="Eventos de transición"><tbody><tr><td>available → processing</td><td><code>PackageDetected</code></td></tr><tr><td>processing → available</td><td><code>CycleConfirmed</code></td></tr><tr><td>processing → blocked</td><td><code>CycleFailed</code></td></tr><tr><td>blocked → available</td><td><code>ResetRequested</code> y ambos valores libres → <code>recordAcceptedReset</code></td></tr><tr><td>blocked → blocked</td><td><code>ResetRequested</code> y algún sensor ocupado → <code>recordRejectedReset</code></td></tr></tbody></table>
+<div class="inputs">Entradas: <code>entrySensorClear : Boolean</code> y <code>exitSensorsClear : Boolean</code>.<br>Entrada lógica → <code>available</code>; la secuencia física de arranque sigue pendiente.</div>
+<div class="note"><strong>Rearme mediante nueva pulsación.</strong>El operador inspecciona y despeja. El rearme aceptado conserva el fallo y no inicia movimiento. Fuera de <code>blocked</code> se ignora; un botón mantenido o una solicitud rechazada no generan rearme automático.</div></section>
+<section class="definitions" id="definitions"><span class="eyebrow">04 · Diccionario del modelo</span><h2>Datos, eventos y puertos</h2><p class="sub">Todas las definiciones desplegadas. <code>~</code> invierte el sentido del puerto en el componente receptor.</p><div class="cards"><article class="card enum"><small>enum def</small><h3>StationExit</h3><p>exit1</p><p>exit2</p><p>exit3</p><p>review</p></article><article class="card enum"><small>enum def</small><h3>LookupStatus</h3><p>found</p><p>unknownId</p><p>unavailable</p></article><article class="card "><small>item def</small><h3>PackageDetected</h3><p>Evento de detección · sin atributos</p></article><article class="card "><small>item def</small><h3>ResetRequested</h3><p>Nueva pulsación tras inspección</p><p>No se almacena una solicitud rechazada</p><p>Mantener pulsado no repite solicitudes</p></article><article class="card "><small>item def</small><h3>CycleConfirmed</h3><p>Evento de ciclo confirmado · sin atributos</p></article><article class="card "><small>item def</small><h3>CycleFailed</h3><p>Evento de ciclo fallido · sin atributos</p></article><article class="card "><small>item def</small><h3>QrResult</h3><p>readable : Boolean</p><p>packageId : String [0..1]</p></article><article class="card "><small>item def</small><h3>DestinationQuery</h3><p>packageId : String</p></article><article class="card "><small>item def</small><h3>DestinationResult</h3><p>status : LookupStatus</p><p>destination : String [0..1]</p></article><article class="card "><small>item def</small><h3>DivertOrder</h3><p>expectedExit : StationExit</p></article><article class="card "><small>item def</small><h3>ExitObservation</h3><p>observedExit : StationExit</p></article><article class="card port"><small>port def</small><h3>EntrySignal</h3><p>out detected : PackageDetected</p></article><article class="card port"><small>port def</small><h3>ResetSignal</h3><p>out request : ResetRequested</p></article><article class="card port"><small>port def</small><h3>QrSignal</h3><p>out result : QrResult</p></article><article class="card port"><small>port def</small><h3>ManifestAccess</h3><p>out query : DestinationQuery</p><p>in result : DestinationResult</p></article><article class="card port"><small>port def</small><h3>DivertSignal</h3><p>out order : DivertOrder</p></article><article class="card port"><small>port def</small><h3>ExitSignal</h3><p>out observation : ExitObservation</p></article></div><div class="note">Los tipos de datos se relacionan por sus nombres con los puertos del panel de componentes. <code>ScalarValues</code> aporta Boolean y String.</div></section>
+<section class="bridge"><span class="eyebrow">Lectura del modelo</span><h2>Qué está definido y qué falta</h2><p class="sub">Vista manual basada en el SysML y el HTML existentes. No es un compilador ni una simulación ejecutable.</p><ol><li>Las flechas continuas de componentes y ciclo representan las conexiones y secuencias descritas en los archivos fuente.</li><li>El panel de estados representa el comportamiento previsto; no certifica la interpretación del modelo por un motor SysML.</li><li><span class="badge">Integración pendiente</span> Vincular explícitamente la ejecución de <code>PackageCycle</code> con <code>processing</code> y la emisión de <code>CycleConfirmed / CycleFailed</code>.</li><li><span class="badge">Integración pendiente</span> Conectar las lecturas actuales de los sensores con las condiciones de rearme y definir el arranque.</li></ol><p class="sub">Fuentes: <a href="../model/opensort.sysml">opensort.sysml</a> · <a href="estacion-v1.html">Vista original</a></p></section>
+</main></div><footer>Arrastra el fondo para moverte · Rueda para zoom · Flechas para desplazar · + / − para zoom · 0 para encuadrar · Funciona sin internet</footer>
+<script>
+const viewport=document.getElementById('viewport'),board=document.getElementById('board');
+let scale=0.5,tx=0,ty=0,drag=null;
+function render(){board.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';document.getElementById('zoom').value=Math.round(scale*100)+'%'}
+function zoomAt(next,x=viewport.clientWidth/2,y=viewport.clientHeight/2){next=Math.max(.15,Math.min(2.5,next));tx=x-(x-tx)*next/scale;ty=y-(y-ty)*next/scale;scale=next;render()}
+function fitRect(x,y,w,h){scale=Math.max(.15,Math.min(1.2,(viewport.clientWidth-50)/w,(viewport.clientHeight-40)/h));tx=(viewport.clientWidth-w*scale)/2-x*scale;ty=(viewport.clientHeight-h*scale)/2-y*scale;render()}
+function fit(){fitRect(0,0,2720,2460)}
+document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{let e=document.getElementById(b.dataset.focus);fitRect(e.offsetLeft,e.offsetTop,e.offsetWidth,e.offsetHeight)});
+document.getElementById('fit').onclick=fit;document.getElementById('actual').onclick=()=>zoomAt(1);
+document.getElementById('plus').onclick=()=>zoomAt(scale*1.2);document.getElementById('minus').onclick=()=>zoomAt(scale/1.2);
+viewport.addEventListener('wheel',e=>{e.preventDefault();let r=viewport.getBoundingClientRect();zoomAt(scale*Math.exp(-e.deltaY*.0015),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+viewport.addEventListener('pointerdown',e=>{if(e.target.closest('a,button')||e.button!==0)return;drag={id:e.pointerId,x:e.clientX,y:e.clientY,tx,ty};viewport.setPointerCapture(e.pointerId);viewport.classList.add('dragging');viewport.focus()});
+viewport.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;tx=drag.tx+e.clientX-drag.x;ty=drag.ty+e.clientY-drag.y;render()});
+function end(){drag=null;viewport.classList.remove('dragging')}viewport.addEventListener('pointerup',end);viewport.addEventListener('pointercancel',end);
+viewport.addEventListener('keydown',e=>{if(e.target.closest('a,button'))return;let handled=true;if(e.key==='+'||e.key==='=')zoomAt(scale*1.2);else if(e.key==='-')zoomAt(scale/1.2);else if(e.key==='0')fit();else if(e.key==='ArrowLeft')tx+=60;else if(e.key==='ArrowRight')tx-=60;else if(e.key==='ArrowUp')ty+=60;else if(e.key==='ArrowDown')ty-=60;else handled=false;if(handled){e.preventDefault();render()}});
+function resize(){viewport.style.top=document.querySelector('header').offsetHeight+'px';render()}window.addEventListener('resize',resize);resize();fit();
+</script></body></html>
