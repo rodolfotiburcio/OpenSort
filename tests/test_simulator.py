@@ -32,6 +32,7 @@ class StationTests(unittest.TestCase):
     def test_timeout_and_wrong_exit_block_next_package(self):
         for observed_exit, reason in [(None, "exit_timeout"), ("B", "wrong_exit")]:
             with self.subTest(observed_exit=observed_exit):
+                self.setUp()
                 events = self.station.run([
                     Package("PKG-001", observed_exit),
                     Package("PKG-999", "REVISION"),

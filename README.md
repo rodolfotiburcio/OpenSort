@@ -19,6 +19,19 @@ El paquete no tiene dependencias externas en tiempo de ejecución; pytest solo s
 
 La demostración emite un objeto JSON por evento. En el escenario predeterminado se confirman dos paquetes, tres pasan a revisión y el siguiente causa un bloqueo por falta de confirmación. El último paquete del lote queda pendiente. El segundo escenario sustituye el timeout por una salida incorrecta.
 
+## Simulación 2D interactiva
+
+```bash
+uv run opensort --web                     # servidor local en http://127.0.0.1:8000
+uv run opensort --web --port 8001         # alternativa si el puerto está ocupado
+```
+
+Abre la dirección indicada en el navegador. Añade paquetes a la cola o carga el lote de demostración y pulsa **Iniciar alimentación**. La vista muestra banda, lector QR, desviador, tres salidas de destino y revisión. Puedes pausar, cambiar la velocidad y preparar intentos con salida incorrecta, timeout o manifiesto no disponible. El lote de demostración incluye un timeout y deja un paquete pendiente.
+
+Tras un fallo, la estación permanece bloqueada. Confirma la inspección y el despeje, comprueba los sensores y pulsa rearme. Para probar un rechazo, marca algún sensor como ocupado. Después de liberarlo se requiere otra pulsación. El rearme conserva el fallo y no inicia movimiento: pulsa **Iniciar alimentación** para continuar.
+
+El motor y los tiempos se ejecutan en Python; el navegador dibuja su estado. Las pestañas comparten una estación en memoria: recargar conserva la sesión, reiniciar el servidor la borra. Si se pierde la conexión se deshabilitan los controles; el motor del servidor sigue su estado actual. La geometría es ilustrativa, con un paquete por ciclo y sin conexión a hardware. Usa `Ctrl+C` en la terminal para detener el servidor.
+
 ## Continuar el proyecto
 
 - [Estado y siguiente tarea](docs/status.md)
