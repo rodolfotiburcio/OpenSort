@@ -1,7 +1,9 @@
 # ADR 002 — Entorno local de modelado con SysON
 
-**Estado:** aceptada para integrar el entorno local. La adopción de SysON como
-editor principal queda pendiente de verificar importación, exportación y recuperación.
+**Estado:** aceptada para integrar el entorno local. La importación, exportación
+y recuperación del modelo lógico de V1 y sus vistas se comprobaron en v2026.11.0.
+La adopción de SysON como editor principal queda pendiente de una decisión explícita
+sobre el flujo de edición; la referencia textual se conserva.
 
 ## Contexto
 
@@ -16,7 +18,8 @@ Docker Compose y autorizó su integración en una rama independiente.
 - Conservar la base en un volumen, publicar la aplicación en loopback y esperar a
   que PostgreSQL esté disponible antes de iniciarla.
 - Mantener VS Code como editor del repositorio; usar el navegador para SysON.
-- Conservar `model/opensort.sysml` como referencia hasta verificar el intercambio.
+- Conservar `model/opensort.sysml` como referencia; el intercambio comprobado no
+  cambia automáticamente la fuente principal de edición.
   Importar en proyectos de evaluación y revisar informes y elementos del modelo.
 - Para una entrega aceptada, conservar texto y archivo completo de proyecto con
   sus representaciones. Git no se sincroniza automáticamente con SysON.
@@ -40,3 +43,5 @@ con el importador debe comprobarse: levantar SysON no valida por sí solo la sin
 ni el comportamiento físico de OpenSort.
 
 Referencias y comandos: [guía de SysON local](../../infra/syson/README.md).
+Evidencia del intercambio: [importación corregida](../../model/syson/importacion-corregida/README.md)
+y [vistas gráficas recuperadas](../../model/syson/vistas-v1/README.md).

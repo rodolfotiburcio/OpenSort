@@ -86,8 +86,9 @@ con SysON ni generación de firmware o de las vistas HTML.
 6. Reimporta texto y ZIP en proyectos nuevos y comprueba qué se conserva.
    Registra versión, informes, diferencias y resultado en `model/syson/README.md`.
 
-Hasta comprobar ese recorrido no sustituimos el archivo original ni adoptamos
-SysON como editor principal. Si se acepta después, cada entrega debe exportar
+El recorrido comprobado se documenta abajo. Conservamos el archivo original como
+referencia; adoptar SysON como editor principal requiere acordar explícitamente el
+flujo de edición. Si se acepta después, cada entrega debe exportar
 texto y proyecto completo para revisión en Git. Los cambios del navegador no hacen
 commits; cambiar de rama Git no cambia el proyecto abierto en SysON. Identifica
 la rama o revisión mediante los nombres de proyectos y exportaciones.

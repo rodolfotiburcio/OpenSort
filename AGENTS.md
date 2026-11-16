@@ -69,7 +69,8 @@ Para cambios de lógica o API, ejecuta las pruebas pertinentes y la suite al cer
 Añade pruebas de regresión cuando cambie comportamiento. Para cambios solo de
 documentación, verifica enlaces, rutas y comandos afectados. Para cambios visuales,
 usa `uv run opensort --web` y comprueba el flujo afectado en navegador; informa si
-esa comprobación no estuvo disponible. No hay linter ni validador SysML configurado:
+esa comprobación no estuvo disponible. La suite Python no incluye un linter ni
+validador SysML. La evidencia de comprobación con SysON está en `model/syson/`;
 no atribuyas esos resultados a `pytest`.
 
 ## Entrega y continuidad

@@ -7,18 +7,19 @@
 V0 — Simulador de una estación logística implementado y validado localmente.
 V1 — Modelo lógico de la estación de banco y visualización HTML integrados en `main` mediante el PR #2 (commit `2915aa4`). Los estados y el rearme están integrados mediante el PR #3 (`6ce304b`); la pizarra HTML navegable y la corrección del relleno de las flechas, mediante el PR #4 (`b952453`). El motor persistente, el rearme y la simulación 2D se integraron en `main` mediante el PR #5 (`4c45618`). La implementación física sigue pendiente.
 
-La rama `feature/syson-local`, creada desde `origin/main` en `cc2e849`, incorpora
-el entorno gráfico local SysON v2026.11.0 con Compose y PostgreSQL 15.20. El entorno
-ya se ejecutó localmente. Esta rama todavía no está integrada en `main`.
-
-`fix/syson-import`, basada en `feature/syson-local` (`a1fd901`), corrige la
-importación y conserva conexiones, ciclo, estados y condiciones de rearme en la
-exportación/reimportación. El archivo textual sigue siendo la referencia; la
-creación y recuperación de representaciones gráficas se verifica por separado.
-
-`feature/syson-views`, basada en `fix/syson-import` (`2b8e6f2`), incorpora tres
-vistas gráficas nativas de SysON y sus exportaciones. Consulta la
+La entrega SysON reúne el entorno local v2026.11.0 con Compose y PostgreSQL 15.20,
+la corrección de importación del modelo y tres vistas gráficas nativas. Se desarrolló
+en las ramas dependientes `feature/syson-local`, `fix/syson-import` y
+`feature/syson-views`, desde `cc2e849`. Consulta la
 [entrega de vistas](../model/syson/vistas-v1/README.md) para abrirlas y recuperarlas.
+
+**Hito de comprobación con una herramienta SysML: completado para el modelo lógico
+de V1 en SysON v2026.11.0.** Se verificaron importación sin advertencias, conservación
+de contratos al exportar/reimportar y recuperación de diagramas. Esto acredita la
+compatibilidad comprobada con esa versión; la ejecución del comportamiento en un
+motor SysML y la validación física siguen pendientes. `model/opensort.sysml` conserva
+su condición de referencia textual; adoptar SysON como editor principal requiere
+una decisión explícita sobre el flujo de edición.
 
 ## Último resultado verificado
 
@@ -45,8 +46,8 @@ La [pizarra navegable](pizarra-v1.html) reúne componentes, ciclo, estados y dic
 
 ## Siguiente tarea
 
-Revisar e integrar el entorno de `feature/syson-local`, su corrección dependiente
-`fix/syson-import` y las representaciones de `feature/syson-views`.
+Concretar el contrato de hardware de V1: componentes, pines, polaridades, filtrado,
+protocolos, tiempos, actuador y acceso al manifiesto, antes de implementar firmware.
 Las vistas de estructura, ciclo y estados ya están creadas sobre los elementos
 existentes y se conservan mediante el ZIP completo del proyecto.
 La [evaluación corregida](../model/syson/importacion-corregida/README.md) documenta
@@ -54,9 +55,7 @@ la importación completa y el intercambio; la
 [evaluación inicial](../model/syson/evaluacion-2026-11-15.md) se conserva como
 histórico del fallo.
 
-Tras verificar el modelo, concretar el contrato de hardware de V1: componentes,
-pines, polaridades, filtrado, protocolos, tiempos, actuador y acceso al manifiesto,
-antes de implementar firmware. La simulación ya está integrada en `main` mediante
+La simulación ya está integrada en `main` mediante
 el PR #5. Para reproducirla: `uv run opensort --web` (o `--port 8001`).
 
 La simulación incorpora estados persistentes, cola, animación, sensores sintéticos, pausa y velocidad, fallos de salida y rearme mediante nueva pulsación. Once pruebas automatizadas cubren las reglas y la API local. La revisión automatizada en Chrome verificó las rutas A/B/C, revisión, timeout, rechazo y aceptación del rearme y pausa posterior, sin errores JavaScript ni desbordamiento horizontal en móvil. La simulación usa biblioteca estándar de Python y recursos web incluidos en el paquete, sin dependencias de ejecución adicionales.
@@ -187,6 +186,11 @@ ciclo ni la entrada inicial de estados, que siguen presentes en el modelo.
 La imagen de estados es una captura completa del navegador, porque la exportación
 nativa recorta algunas etiquetas y bucles. El ZIP mantiene la vista editable.
 No se cambió la simulación ni se acredita ejecución SysML o validación física.
+
+Comprobaciones de cierre de la entrega conjunta: `uv run pytest -v` terminó con
+11 pruebas y 20 subpruebas aprobadas; Compose validó su configuración y
+`git diff --check origin/main...HEAD` no detectó errores de espacios. Se comprobaron
+de nuevo la integridad de las exportaciones ZIP y los hashes de las vistas.
 
 ## Para retomar en otro chat
 
