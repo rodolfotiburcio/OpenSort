@@ -7,6 +7,11 @@
 V0 — Simulador de una estación logística implementado y validado localmente.
 V1 — Modelo lógico de la estación de banco y visualización HTML integrados en `main` mediante el PR #2 (commit `2915aa4`). Los estados y el rearme están integrados mediante el PR #3 (`6ce304b`); la pizarra HTML navegable y la corrección del relleno de las flechas, mediante el PR #4 (`b952453`). El motor persistente, el rearme y la simulación 2D se integraron en `main` mediante el PR #5 (`4c45618`). La implementación física sigue pendiente.
 
+La rama `feature/syson-local`, creada desde `origin/main` en `cc2e849`, incorpora
+el entorno gráfico local SysON v2026.11.0 con Compose y PostgreSQL 15.20. El entorno
+ya se ejecutó localmente; la importación del modelo es parcial y no se acepta como
+sustituto del archivo textual. Esta rama todavía no está integrada en `main`.
+
 ## Último resultado verificado
 
 El lote de demostración de V0 confirma salidas, envía paquetes a revisión y bloquea la admisión ante una discrepancia. Las pruebas automatizadas cubren confirmación, causas de revisión, timeout, salida incorrecta y reprocesamiento. Consulta los [comandos de reproducción](../README.md#ejecutar).
@@ -32,7 +37,16 @@ La [pizarra navegable](pizarra-v1.html) reúne componentes, ciclo, estados y dic
 
 ## Siguiente tarea
 
-Concretar el contrato de hardware de V1: componentes, pines, polaridades, filtrado, protocolos, tiempos, actuador y acceso al manifiesto, antes de implementar el firmware. La simulación ya está integrada en `main` mediante el PR #5. Para reproducirla: `uv run opensort --web` (o `--port 8001` si el puerto está ocupado).
+Revisar e integrar `feature/syson-local`. Después, resolver el informe de
+importación en SysON y comprobar que se conservan las seis interfaces,
+`PackageCycle` y `StationStates` al exportar y reimportar. La
+[evaluación inicial](../model/syson/evaluacion-2026-11-15.md) documenta el error
+señalado por el importador en la línea 73 y la pérdida de las dos definiciones.
+
+Tras verificar el modelo, concretar el contrato de hardware de V1: componentes,
+pines, polaridades, filtrado, protocolos, tiempos, actuador y acceso al manifiesto,
+antes de implementar firmware. La simulación ya está integrada en `main` mediante
+el PR #5. Para reproducirla: `uv run opensort --web` (o `--port 8001`).
 
 La simulación incorpora estados persistentes, cola, animación, sensores sintéticos, pausa y velocidad, fallos de salida y rearme mediante nueva pulsación. Once pruebas automatizadas cubren las reglas y la API local. La revisión automatizada en Chrome verificó las rutas A/B/C, revisión, timeout, rechazo y aceptación del rearme y pausa posterior, sin errores JavaScript ni desbordamiento horizontal en móvil. La simulación usa biblioteca estándar de Python y recursos web incluidos en el paquete, sin dependencias de ejecución adicionales.
 
@@ -57,10 +71,9 @@ incluye ejemplos de pedidos, delegación y continuidad; la [guía MCP](mcp.md)
 documenta activación y autenticación. Esta incorporación aporta instrucciones y
 configuración para el desarrollo.
 
-Esta entrega se prepara en `docs/desarrollo-ia`, creada directamente desde
-`origin/main` en `4c45618`, para un PR independiente. Se conserva la rama
-`feature/simulacion-2d`. Las instrucciones y la guía incorporan la creación de una
-rama por tarea antes de editar y la comprobación del diff contra la base del PR.
+Esa entrega se integró mediante el PR #6 (`cc2e849`). Las instrucciones y la guía
+incorporan la creación de una rama por tarea antes de editar y la comprobación del
+diff contra la base del PR.
 
 Verificación de esta entrega: `uv run pytest -v` terminó con 11 pruebas y 20
 subpruebas aprobadas. Se ejecutaron `uv run opensort` y
@@ -75,6 +88,36 @@ de agente, quedan pendientes de una sesión que los necesite. Los ejemplos no
 contienen credenciales ni modifican la configuración global. El siguiente paso
 funcional sigue siendo el indicado arriba; para retomar, inicia Codex desde la raíz
 y proporciona un objetivo y criterio de aceptación según la guía.
+
+## Entorno SysON
+
+La [guía local](../infra/syson/README.md) documenta arranque, persistencia, respaldo,
+restauración y exportaciones. El [ADR 002](adr/0002-syson-local.md) acepta el entorno
+local y mantiene pendiente su adopción como editor principal. Se añadieron tareas
+de VS Code y el skill `opensort-syson`; se reutilizan los perfiles existentes.
+
+Verificación realizada en esta rama el 2026-11-15:
+
+- `docker compose -f infra/syson/compose.yaml config --quiet`: configuración válida.
+- `up -d --wait --wait-timeout 180`: SysON y PostgreSQL en estado `healthy`;
+  `/actuator/health` devuelve `UP`. Elasticsearch es opcional y no está desplegado;
+  solo su comprobación de salud está desactivada.
+- Inicio en Chrome mediante Playwright temporal, creación de proyectos e
+  importación por API. Exportación textual y ZIP; reimportación del texto parcial
+  sin informe y carga del ZIP desde el navegador. Esto no valida el modelo completo.
+- `down` seguido de `up`: se conservaron los tres proyectos con los mismos IDs.
+- `pg_dump -Fc` y `pg_restore --no-owner --exit-on-error` en el proyecto separado
+  `opensort-syson-restore`: recuperados los dos proyectos presentes al respaldar;
+  el JSON del proyecto evaluado coincide con el del ZIP anterior al respaldo.
+  La instancia de restauración quedó detenida conservando su volumen.
+- `uv run pytest -v`: 11 pruebas y 20 subpruebas aprobadas. Los skills nuevo y de
+  modelo pasaron `quick_validate.py`; se comprobaron enlaces locales, tareas,
+  exclusión de `.env`/respaldos y espacios con `git diff --check`.
+
+SysON queda disponible localmente en <http://localhost:8080>. No se cambió el
+modelo de referencia ni las vistas HTML. Falta corregir o adaptar el modelo y
+verificar el intercambio completo, incluidos diagramas; la validación física
+continúa pendiente. Los cambios del navegador no se sincronizan con Git.
 
 ## Para retomar en otro chat
 

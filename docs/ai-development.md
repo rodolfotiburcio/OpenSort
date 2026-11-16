@@ -40,10 +40,12 @@ identifica a qué tarea pertenecen y consérvalos antes de cambiar de base. Si l
 ya tiene una rama, retómala. Antes del PR, revisa `git diff origin/main...HEAD`
 y `git log --oneline origin/main..HEAD` para comprobar su alcance.
 
-Codex descubre las skills de proyecto en `.agents/skills/`. Si no aparecen tras un
-cambio, reinicia la sesión desde esta carpeta. Las instrucciones de `AGENTS.md`
-se cargan al iniciar; no necesitas copiarlas en cada petición. Este comportamiento
-se describe en las guías oficiales de [skills](https://developers.openai.com/codex/skills/)
+Codex descubre las skills de proyecto en `.agents/skills/` y detecta sus cambios
+automáticamente; si no aparecen, reinicia la sesión desde esta carpeta. Las
+instrucciones de `AGENTS.md` se cargan al iniciar. Si se añade o cambia durante una
+conversación, pide al agente que lo lea explícitamente para incorporarlo a la tarea
+actual; no necesitas empezar otra conversación solo para esa lectura. El mecanismo
+de descubrimiento se describe en las guías oficiales de [skills](https://developers.openai.com/codex/skills/)
 y [AGENTS.md](https://developers.openai.com/codex/guides/agents-md/).
 
 Primer mensaje sugerido:
@@ -66,6 +68,7 @@ su presencia allí no significa que estén instaladas o implementadas.
 | `opensort-simulator` | Clasificación, identidad, eventos, bloqueo y recuperación | [SKILL.md](../.agents/skills/opensort-simulator/SKILL.md) |
 | `opensort-web` | Motor temporal, API, controles y representación 2D | [SKILL.md](../.agents/skills/opensort-web/SKILL.md) |
 | `opensort-model` | Requisitos, SysML, vistas HTML y contrato de V1 | [SKILL.md](../.agents/skills/opensort-model/SKILL.md) |
+| `opensort-syson` | Compose, persistencia e intercambio de modelos en SysON | [SKILL.md](../.agents/skills/opensort-syson/SKILL.md) |
 
 Pueden seleccionarse automáticamente por su descripción o invocarse por nombre.
 Por ejemplo, escribe en Codex:
@@ -84,6 +87,12 @@ Informa por separado las pruebas Python y la revisión visual.
 ```text
 Usa $opensort-model para proponer el contrato del lector QR de V1. Enumera datos,
 errores, decisiones pendientes y evidencia necesaria antes de elegir hardware.
+```
+
+```text
+Usa $opensort-syson para iniciar el entorno local y evaluar la importación del
+modelo. Conserva el original, registra el informe y distingue arranque correcto
+de intercambio completo del modelo.
 ```
 
 Para añadir una skill, crea `.agents/skills/nombre/SKILL.md` con frontmatter YAML

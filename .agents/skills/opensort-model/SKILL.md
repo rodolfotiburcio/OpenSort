@@ -15,6 +15,10 @@ Relaciona cada requisito cambiado con su interfaz, transición y evidencia en c�
 o prueba. Distingue el modelo lógico de V1, la simulación implementada y las funciones
 planificadas para V2/V3. Las dos vistas HTML se actualizan manualmente.
 
+Si la tarea usa SysON, consulta también `opensort-syson` y `infra/syson/README.md`
+para el entorno y los límites de intercambio. El archivo textual sigue siendo
+referencia hasta verificar su importación y recuperación completas.
+
 Conserva las seis interfaces documentadas: detección de entrada, resultado QR,
 consulta/respuesta del manifiesto, orden de desvío, observación de salida y solicitud
 de rearme. El botón representa una nueva pulsación después de inspeccionar; sensores
