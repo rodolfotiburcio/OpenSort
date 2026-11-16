@@ -4,8 +4,10 @@ La referencia textual sigue en [`../opensort.sysml`](../opensort.sysml). Este
 directorio conserva evidencia y exportaciones aceptadas del entorno
 [SysON local](../../infra/syson/README.md); no contiene archivos de PostgreSQL.
 
-La [evaluación inicial](evaluacion-2026-11-15.md) detectó una importación parcial:
-el texto exportado pierde `PackageCycle` y `StationStates`. No sustituye la referencia.
+La [evaluación inicial](evaluacion-2026-11-15.md) detectó una importación parcial.
+La [corrección y nueva evaluación](importacion-corregida/README.md) recupera las
+conexiones, `PackageCycle` y `StationStates`, y conserva las condiciones de rearme
+al exportar y reimportar. Incluye texto, proyectos completos y resultados.
 
 Cuando se realice una evaluación o se acepte una versión, registrar:
 

@@ -70,7 +70,7 @@ package OpenSort {
             doc /* Controlador previsto: ESP32. */
             port reset : ~ResetSignal;
             exhibit state operatingStates : StationStates;
-            port entry : ~EntrySignal;
+            port 'entry' : ~EntrySignal;
             port qr : ~QrSignal;
             port manifest : ManifestAccess;
             port divert : DivertSignal;
@@ -78,7 +78,7 @@ package OpenSort {
         }
 
         connect resetButton.signal to controller.reset;
-        connect entrySensor.signal to controller.entry;
+        connect entrySensor.signal to controller.'entry';
         connect qrReader.signal to controller.qr;
         connect controller.manifest to manifestSource.access;
         connect controller.divert to diverter.signal;
@@ -178,7 +178,7 @@ package OpenSort {
             }
             then available;
         accept ResetRequested
-            if not (entrySensorClear and exitSensorsClear)
+            if not entrySensorClear or not exitSensorsClear
             do action recordRejectedReset {
                 doc /* Registrar rechazo y conservar bloqueo. Tras despejar
                        la estación se requiere una nueva pulsación. */

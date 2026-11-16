@@ -93,8 +93,10 @@ commits; cambiar de rama Git no cambia el proyecto abierto en SysON. Identifica
 la rama o revisión mediante los nombres de proyectos y exportaciones.
 
 La [primera evaluación](../../model/syson/evaluacion-2026-11-15.md) detectó una
-importación parcial: el texto exportado pierde `PackageCycle` y `StationStates`.
-El entorno está operativo, pero ese resultado no permite sustituir la referencia.
+importación parcial. La [corrección posterior](../../model/syson/importacion-corregida/README.md)
+permite importar sin advertencias y conservar las conexiones, el ciclo, los estados
+y las condiciones de rearme al exportar y reimportar. Los proyectos de esa prueba
+no tienen diagramas: las representaciones deben crearse y comprobarse por separado.
 
 ## Respaldo y restauración
 

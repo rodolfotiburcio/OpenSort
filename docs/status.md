@@ -9,8 +9,12 @@ V1 — Modelo lógico de la estación de banco y visualización HTML integrados 
 
 La rama `feature/syson-local`, creada desde `origin/main` en `cc2e849`, incorpora
 el entorno gráfico local SysON v2026.11.0 con Compose y PostgreSQL 15.20. El entorno
-ya se ejecutó localmente; la importación del modelo es parcial y no se acepta como
-sustituto del archivo textual. Esta rama todavía no está integrada en `main`.
+ya se ejecutó localmente. Esta rama todavía no está integrada en `main`.
+
+`fix/syson-import`, basada en `feature/syson-local` (`a1fd901`), corrige la
+importación y conserva conexiones, ciclo, estados y condiciones de rearme en la
+exportación/reimportación. El archivo textual sigue siendo la referencia; la
+creación y recuperación de representaciones gráficas se verifica por separado.
 
 ## Último resultado verificado
 
@@ -37,11 +41,13 @@ La [pizarra navegable](pizarra-v1.html) reúne componentes, ciclo, estados y dic
 
 ## Siguiente tarea
 
-Revisar e integrar `feature/syson-local`. Después, resolver el informe de
-importación en SysON y comprobar que se conservan las seis interfaces,
-`PackageCycle` y `StationStates` al exportar y reimportar. La
-[evaluación inicial](../model/syson/evaluacion-2026-11-15.md) documenta el error
-señalado por el importador en la línea 73 y la pérdida de las dos definiciones.
+Revisar e integrar el entorno de `feature/syson-local` y su corrección dependiente
+`fix/syson-import`. Después, crear las vistas de estructura, ciclo y estados en
+SysON sobre los elementos existentes y comprobar que el ZIP conserva esas vistas.
+La [evaluación corregida](../model/syson/importacion-corregida/README.md) documenta
+la importación completa y el intercambio; la
+[evaluación inicial](../model/syson/evaluacion-2026-11-15.md) se conserva como
+histórico del fallo.
 
 Tras verificar el modelo, concretar el contrato de hardware de V1: componentes,
 pines, polaridades, filtrado, protocolos, tiempos, actuador y acceso al manifiesto,
@@ -50,14 +56,14 @@ el PR #5. Para reproducirla: `uv run opensort --web` (o `--port 8001`).
 
 La simulación incorpora estados persistentes, cola, animación, sensores sintéticos, pausa y velocidad, fallos de salida y rearme mediante nueva pulsación. Once pruebas automatizadas cubren las reglas y la API local. La revisión automatizada en Chrome verificó las rutas A/B/C, revisión, timeout, rechazo y aceptación del rearme y pausa posterior, sin errores JavaScript ni desbordamiento horizontal en móvil. La simulación usa biblioteca estándar de Python y recursos web incluidos en el paquete, sin dependencias de ejecución adicionales.
 
-Criterio de revisión: provocar un fallo, comprobar que la cola no se admite, rechazar rearme antes de inspeccionar o con sensores ocupados, aceptar otra pulsación tras despejar y reanudar explícitamente la alimentación. El historial debe conservar el fallo. La validación física y la sintaxis SysML siguen pendientes.
+Criterio de revisión: provocar un fallo, comprobar que la cola no se admite, rechazar rearme antes de inspeccionar o con sensores ocupados, aceptar otra pulsación tras despejar y reanudar explícitamente la alimentación. El historial debe conservar el fallo. La importación y reimportación del modelo ya se comprobaron en SysON v2026.11.0; su ejecución en un motor SysML y la validación física siguen pendientes.
 
 ## Pendientes posteriores
 
 - Concretar pines, polaridades, filtrado, protocolos, formatos, tiempos y actuador.
 - Definir la ubicación y el acceso al manifiesto.
 - Integrar lector QR, ESP32, sensores y desviador; comprobar la política de manifiesto no disponible en la implementación.
-- Validar la sintaxis de la ampliación SysML de estados y rearme con una herramienta compatible.
+- Crear y verificar las representaciones gráficas en SysON; conservarlas mediante exportación del proyecto completo.
 - Definir la secuencia de arranque y conectar las lecturas actuales de sensores y los eventos del ciclo a la máquina de estados.
 - Tras validar el simulador, implementar y probar el rearme en firmware con sensores y botón físicos.
 - Publicar la visualización mediante GitHub Pages y evaluar su generación automática desde el modelo.
@@ -96,7 +102,7 @@ restauración y exportaciones. El [ADR 002](adr/0002-syson-local.md) acepta el e
 local y mantiene pendiente su adopción como editor principal. Se añadieron tareas
 de VS Code y el skill `opensort-syson`; se reutilizan los perfiles existentes.
 
-Verificación realizada en esta rama el 2026-11-15:
+Verificación inicial del entorno realizada el 2026-11-15:
 
 - `docker compose -f infra/syson/compose.yaml config --quiet`: configuración válida.
 - `up -d --wait --wait-timeout 180`: SysON y PostgreSQL en estado `healthy`;
@@ -114,10 +120,40 @@ Verificación realizada en esta rama el 2026-11-15:
   modelo pasaron `quick_validate.py`; se comprobaron enlaces locales, tareas,
   exclusión de `.env`/respaldos y espacios con `git diff --check`.
 
-SysON queda disponible localmente en <http://localhost:8080>. No se cambió el
-modelo de referencia ni las vistas HTML. Falta corregir o adaptar el modelo y
-verificar el intercambio completo, incluidos diagramas; la validación física
-continúa pendiente. Los cambios del navegador no se sincronizan con Git.
+En esa entrega no se cambió el modelo ni las vistas HTML. Los cambios del navegador
+no se sincronizan con Git.
+
+## Reparación de la importación
+
+El 2026-11-15, en `fix/syson-import`, se corrigió el uso de la palabra reservada
+`entry`: el puerto y su referencia se escriben como `'entry'`, sin cambiar su
+nombre lógico. También se reescribió el rechazo del rearme con la condición
+equivalente `not entrySensorClear or not exitSensorsClear`, porque el exportador
+probado elimina la agrupación de `not (entrySensorClear and exitSensorsClear)`.
+
+Comprobaciones realizadas sobre proyectos nuevos, sin sustituir los anteriores:
+
+- Importación de `model/opensort.sysml` y reimportación de su exportación textual:
+  `UploadDocumentSuccessPayload` con informe vacío en ambos casos.
+- Presencia de `BenchStation`, `PackageCycle` y `StationStates`, seis conexiones,
+  seis transiciones (incluida la inicial) y cuatro decisiones del ciclo.
+- Contratos de conexiones y estados iguales en los dos proyectos; evaluación de
+  las condiciones extraídas del JSON para las cuatro combinaciones de sensores:
+  el rearme se acepta solo con entrada y salidas libres y se rechaza en las otras.
+- Exportación y segunda exportación con tokens iguales excluyendo comentarios y
+  espacios. Se conservaron texto, ZIP de ambos proyectos y resultados con hashes
+  en `model/syson/importacion-corregida/`.
+- Carga del ZIP desde Upload project: el servidor creó el proyecto y su contrato
+  descargado por API coincide con el original. La espera de navegación automática
+  del navegador agotó su tiempo; se registra separadamente del éxito de la carga.
+- `uv run pytest -v`: 11 pruebas y 20 subpruebas aprobadas. Las vistas HTML
+  mantienen el nombre del puerto y la misma condición lógica; no necesitaron cambios.
+
+SysON sigue disponible en <http://localhost:8080>. El proyecto local
+**OpenSort V1 corregido** tiene ID `6a9874e5-c744-4cd0-a6ac-b578656e239a`.
+La referencia textual está corregida; no se acredita todavía ejecución del modelo
+ni validación física. Los ZIP de esta evaluación no contienen diagramas; el
+siguiente paso sigue siendo crear y comprobar las representaciones indicadas arriba.
 
 ## Para retomar en otro chat
 

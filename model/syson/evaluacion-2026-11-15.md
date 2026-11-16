@@ -1,5 +1,9 @@
 # Primera importación en SysON v2026.11.0
 
+Registro histórico del fallo inicial. La
+[evaluación posterior corregida](importacion-corregida/README.md) resuelve la
+importación y comprueba la conservación de conexiones, ciclo y estados.
+
 ## Entrada y procedimiento
 
 Evaluación local del 2026-11-15, con el modelo de `main` en `cc2e849`, sin modificarlo:
