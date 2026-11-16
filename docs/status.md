@@ -1,6 +1,6 @@
 # OpenSort — Estado del proyecto
 
-Última actualización: 2026-11-14.
+Última actualización: 2026-11-15.
 
 ## Hito actual
 
@@ -11,7 +11,7 @@ V1 — Modelo lógico de la estación de banco y visualización HTML integrados 
 
 El lote de demostración de V0 confirma salidas, envía paquetes a revisión y bloquea la admisión ante una discrepancia. Las pruebas automatizadas cubren confirmación, causas de revisión, timeout, salida incorrecta y reprocesamiento. Consulta los [comandos de reproducción](../README.md#ejecutar).
 
-En la revisión local pasaron las cuatro pruebas con `python3 -m unittest discover -s tests -v` y se verificó la demo `python3 -m opensort --scenario wrong-exit`. Esa revisión correspondía a V0. En `feature/simulacion-2d`, el bloqueo ya persiste entre llamadas y requiere rearme para volver a admitir paquetes.
+En la revisión de cierre del 2026-11-15 pasaron las once pruebas con `python3 -m unittest discover -s tests -v` y `git diff --check main...HEAD` no detectó errores de espacios. También se verificó la demo `python3 -m opensort --scenario wrong-exit`. En `feature/simulacion-2d`, el bloqueo persiste entre llamadas y requiere rearme para volver a admitir paquetes; la sesión se conserva en memoria mientras el servidor está activo, sin persistencia en disco.
 
 El usuario confirmó que el [modelo SysML](../model/opensort.sysml) es correcto. El modelo documenta seis interfaces: detección de entrada, resultado QR, consulta y respuesta del manifiesto, orden de desvío, confirmación de salida y solicitud de rearme. La [vista HTML](estacion-v1.html) representa el ciclo, las interfaces y los estados de la estación; su actualización es manual.
 
@@ -32,11 +32,13 @@ La [pizarra navegable](pizarra-v1.html) reúne componentes, ciclo, estados y dic
 
 ## Siguiente tarea
 
-Revisar localmente la simulación 2D con `uv run opensort --web` (o `--port 8001` si el puerto está ocupado), validar la experiencia y preparar la integración de `feature/simulacion-2d` en `main`.
+Crear el pull request de `feature/simulacion-2d` hacia `main` y realizar el merge; ambos pasos quedan a cargo del usuario. La rama queda preparada para integración con las once pruebas locales aprobadas. Para reproducir la simulación: `uv run opensort --web` (o `--port 8001` si el puerto está ocupado).
 
 La rama incorpora estados persistentes, cola, animación, sensores sintéticos, pausa y velocidad, fallos de salida y rearme mediante nueva pulsación. Once pruebas automatizadas cubren las reglas y la API local. La revisión automatizada en Chrome verificó las rutas A/B/C, revisión, timeout, rechazo y aceptación del rearme y pausa posterior, sin errores JavaScript ni desbordamiento horizontal en móvil. La simulación usa biblioteca estándar de Python y recursos web incluidos en el paquete, sin dependencias de ejecución adicionales.
 
 Criterio de revisión: provocar un fallo, comprobar que la cola no se admite, rechazar rearme antes de inspeccionar o con sensores ocupados, aceptar otra pulsación tras despejar y reanudar explícitamente la alimentación. El historial debe conservar el fallo. La validación física y la sintaxis SysML siguen pendientes.
+
+Después del merge, concretar el contrato de hardware de V1: componentes, pines, polaridades, filtrado, protocolos, tiempos, actuador y acceso al manifiesto, antes de implementar el firmware.
 
 ## Pendientes posteriores
 
