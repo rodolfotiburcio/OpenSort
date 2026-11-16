@@ -9,6 +9,10 @@ La [corrección y nueva evaluación](importacion-corregida/README.md) recupera l
 conexiones, `PackageCycle` y `StationStates`, y conserva las condiciones de rearme
 al exportar y reimportar. Incluye texto, proyectos completos y resultados.
 
+Las [vistas gráficas de V1](vistas-v1/README.md) añaden representaciones nativas
+de componentes e interfaces, ciclo de clasificación y estados con rearme. Incluyen
+el ZIP editable, exportación textual, imágenes y evidencia de recuperación.
+
 Cuando se realice una evaluación o se acepte una versión, registrar:
 
 - Versión de SysON y commit del modelo importado.

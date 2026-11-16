@@ -16,6 +16,10 @@ importación y conserva conexiones, ciclo, estados y condiciones de rearme en la
 exportación/reimportación. El archivo textual sigue siendo la referencia; la
 creación y recuperación de representaciones gráficas se verifica por separado.
 
+`feature/syson-views`, basada en `fix/syson-import` (`2b8e6f2`), incorpora tres
+vistas gráficas nativas de SysON y sus exportaciones. Consulta la
+[entrega de vistas](../model/syson/vistas-v1/README.md) para abrirlas y recuperarlas.
+
 ## Último resultado verificado
 
 El lote de demostración de V0 confirma salidas, envía paquetes a revisión y bloquea la admisión ante una discrepancia. Las pruebas automatizadas cubren confirmación, causas de revisión, timeout, salida incorrecta y reprocesamiento. Consulta los [comandos de reproducción](../README.md#ejecutar).
@@ -41,9 +45,10 @@ La [pizarra navegable](pizarra-v1.html) reúne componentes, ciclo, estados y dic
 
 ## Siguiente tarea
 
-Revisar e integrar el entorno de `feature/syson-local` y su corrección dependiente
-`fix/syson-import`. Después, crear las vistas de estructura, ciclo y estados en
-SysON sobre los elementos existentes y comprobar que el ZIP conserva esas vistas.
+Revisar e integrar el entorno de `feature/syson-local`, su corrección dependiente
+`fix/syson-import` y las representaciones de `feature/syson-views`.
+Las vistas de estructura, ciclo y estados ya están creadas sobre los elementos
+existentes y se conservan mediante el ZIP completo del proyecto.
 La [evaluación corregida](../model/syson/importacion-corregida/README.md) documenta
 la importación completa y el intercambio; la
 [evaluación inicial](../model/syson/evaluacion-2026-11-15.md) se conserva como
@@ -63,7 +68,7 @@ Criterio de revisión: provocar un fallo, comprobar que la cola no se admite, re
 - Concretar pines, polaridades, filtrado, protocolos, formatos, tiempos y actuador.
 - Definir la ubicación y el acceso al manifiesto.
 - Integrar lector QR, ESP32, sensores y desviador; comprobar la política de manifiesto no disponible en la implementación.
-- Crear y verificar las representaciones gráficas en SysON; conservarlas mediante exportación del proyecto completo.
+- Ampliar las vistas de SysON cuando se detalle V1 y guardar cada entrega como proyecto completo.
 - Definir la secuencia de arranque y conectar las lecturas actuales de sensores y los eventos del ciclo a la máquina de estados.
 - Tras validar el simulador, implementar y probar el rearme en firmware con sensores y botón físicos.
 - Publicar la visualización mediante GitHub Pages y evaluar su generación automática desde el modelo.
@@ -152,8 +157,36 @@ Comprobaciones realizadas sobre proyectos nuevos, sin sustituir los anteriores:
 SysON sigue disponible en <http://localhost:8080>. El proyecto local
 **OpenSort V1 corregido** tiene ID `6a9874e5-c744-4cd0-a6ac-b578656e239a`.
 La referencia textual está corregida; no se acredita todavía ejecución del modelo
-ni validación física. Los ZIP de esta evaluación no contienen diagramas; el
-siguiente paso sigue siendo crear y comprobar las representaciones indicadas arriba.
+ni validación física. Los ZIP de esa evaluación no contienen diagramas; la entrega
+posterior indicada a continuación añade y comprueba las representaciones.
+
+## Vistas gráficas en SysON
+
+El 2026-11-15, en `feature/syson-views`, se creó el proyecto independiente
+**OpenSort V1 vistas**, sin sustituir los proyectos anteriores del usuario.
+Las representaciones editables muestran componentes e interfaces (7 componentes,
+12 puertos y 6 conexiones), ciclo de clasificación (15 nodos y 17 sucesiones) y
+estados con rearme (3 estados y 5 transiciones visibles).
+
+Se comprobó que el modelo original permanece igual al excluir únicamente los
+`ViewUsage` añadidos. El ZIP recupera el documento con nuevos identificadores y
+conserva las posiciones y tamaños de nodos, puertos y etiquetas. Las tres vistas
+se abrieron en Chrome; los archivos y resultados están en
+[`model/syson/vistas-v1/`](../model/syson/vistas-v1/README.md).
+
+La reimportación del texto exportado terminó con informe vacío y conservó los
+tres `ViewUsage`, las conexiones y los estados; creó cero representaciones
+gráficas. Para recuperar los diagramas con su distribución se requiere el ZIP.
+
+La comprobación en navegador de la copia recuperada terminó sin errores JavaScript.
+Se verificaron los hashes de los archivos, la integridad de ambos ZIP, los enlaces
+locales y `docker compose -f infra/syson/compose.yaml config --quiet`.
+
+Son vistas seleccionadas: no dibujan los extremos implícitos `start`/`done` del
+ciclo ni la entrada inicial de estados, que siguen presentes en el modelo.
+La imagen de estados es una captura completa del navegador, porque la exportación
+nativa recorta algunas etiquetas y bucles. El ZIP mantiene la vista editable.
+No se cambió la simulación ni se acredita ejecución SysML o validación física.
 
 ## Para retomar en otro chat
 

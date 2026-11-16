@@ -47,6 +47,9 @@ respaldar y detener los servicios sin perder datos. Incluye tareas de VS Code.
 El simulador Python funciona sin Docker; no hay sincronización automática entre
 SysON y los archivos del repositorio.
 
+Las [tres vistas gráficas de V1](model/syson/vistas-v1/README.md) incluyen el
+proyecto completo para recuperar componentes e interfaces, ciclo y estados en SysON.
+
 ## Continuar el proyecto
 
 - [Estado y siguiente tarea](docs/status.md)

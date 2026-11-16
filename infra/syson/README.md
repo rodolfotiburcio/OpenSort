@@ -96,7 +96,10 @@ La [primera evaluación](../../model/syson/evaluacion-2026-11-15.md) detectó un
 importación parcial. La [corrección posterior](../../model/syson/importacion-corregida/README.md)
 permite importar sin advertencias y conservar las conexiones, el ciclo, los estados
 y las condiciones de rearme al exportar y reimportar. Los proyectos de esa prueba
-no tienen diagramas: las representaciones deben crearse y comprobarse por separado.
+no tienen diagramas. La entrega posterior de [vistas gráficas de V1](../../model/syson/vistas-v1/README.md)
+incluye las tres representaciones editables y su recuperación mediante **Upload project**.
+Para abrirlas con su distribución, carga el ZIP de esa entrega desde la página
+inicial; importar solamente `model/opensort.sysml` no reconstruye esos diagramas.
 
 ## Respaldo y restauración
 
