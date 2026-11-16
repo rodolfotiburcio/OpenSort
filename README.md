@@ -54,6 +54,7 @@ proyecto completo para recuperar componentes e interfaces, ciclo y estados en Sy
 
 - [Estado y siguiente tarea](docs/status.md)
 - [Hoja de ruta](docs/roadmap.md)
+- [Materiales preliminares y parámetros por definir para V1](docs/materiales-v1.md)
 - [Modelo y criterios de V0](docs/simulator.md)
 - [ADR 001 — Identidad y destino del paquete](docs/adr/0001-qr-package-id.md)
 

@@ -48,6 +48,10 @@ La [pizarra navegable](pizarra-v1.html) reúne componentes, ciclo, estados y dic
 
 Concretar el contrato de hardware de V1: componentes, pines, polaridades, filtrado,
 protocolos, tiempos, actuador y acceso al manifiesto, antes de implementar firmware.
+La [lista preliminar de materiales](materiales-v1.md) registra componentes y recursos,
+cantidades iniciales, su vínculo con SysML y los parámetros pendientes por pieza.
+Las referencias comerciales y los valores físicos siguen por seleccionar; los
+conjuntos de soporte se documentan como propuestas de diseño.
 Las vistas de estructura, ciclo y estados ya están creadas sobre los elementos
 existentes y se conservan mediante el ZIP completo del proyecto.
 La [evaluación corregida](../model/syson/importacion-corregida/README.md) documenta
