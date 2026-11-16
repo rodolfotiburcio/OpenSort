@@ -1,0 +1,274 @@
+{
+  "date": "2026-11-15",
+  "syson_version": "v2026.11.0",
+  "source": "model/opensort.sysml",
+  "source_sha256": "b73754855b96dc0b1261301846f554ea7cac1d5966a88adfc6c6b69c4aa1b8ea",
+  "projects": [
+    {
+      "project": "6a9874e5-c744-4cd0-a6ac-b578656e239a",
+      "context": "2101fa43-f63d-4785-89c6-e96f5a30f91d",
+      "report": "",
+      "input": "model/opensort.sysml"
+    },
+    {
+      "project": "72f9af7e-2110-4608-9782-7d77ea82365d",
+      "context": "ccc87f3a-1368-4792-a699-755f5ff4bd75",
+      "report": "",
+      "input": "/tmp/opensort-syson-fix/corrected-export.sysml"
+    }
+  ],
+  "artifacts_sha256": {
+    "opensort-export.sysml": "2fa170d28176fe9024684337ec9a1fefbbd75e687ffaae503d651f51ff15fea5",
+    "opensort-project.zip": "52a285c8a76721724bcd6986e16307e0d507147c8212af3d0336296145d8b512",
+    "reimported-project.zip": "19eaf0bd8c7cc431c7de6997c54b77dcf4cb674d738e035283b8746239bf7f45"
+  },
+  "definitions_present": [
+    "BenchStation",
+    "PackageCycle",
+    "StationStates"
+  ],
+  "cycle_action_count": 10,
+  "decision_count": 4,
+  "imported_contract": {
+    "connections": [
+      [
+        "resetButton.signal",
+        "controller.reset"
+      ],
+      [
+        "entrySensor.signal",
+        "controller.entry"
+      ],
+      [
+        "qrReader.signal",
+        "controller.qr"
+      ],
+      [
+        "controller.manifest",
+        "manifestSource.access"
+      ],
+      [
+        "controller.divert",
+        "diverter.signal"
+      ],
+      [
+        "exitSensors.signal",
+        "controller.exitObservation"
+      ]
+    ],
+    "transitions": [
+      {
+        "source": "entry",
+        "target": "available",
+        "trigger": null,
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "available",
+        "target": "processing",
+        "trigger": "PackageDetected",
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "processing",
+        "target": "available",
+        "trigger": "CycleConfirmed",
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "processing",
+        "target": "blocked",
+        "trigger": "CycleFailed",
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "blocked",
+        "target": "available",
+        "trigger": "ResetRequested",
+        "guard": [
+          "and",
+          "entrySensorClear",
+          "exitSensorsClear"
+        ],
+        "effect": "recordAcceptedReset",
+        "declaredName": null
+      },
+      {
+        "source": "blocked",
+        "target": "blocked",
+        "trigger": "ResetRequested",
+        "guard": [
+          "or",
+          [
+            "not",
+            "entrySensorClear"
+          ],
+          [
+            "not",
+            "exitSensorsClear"
+          ]
+        ],
+        "effect": "recordRejectedReset",
+        "declaredName": null
+      }
+    ]
+  },
+  "reimported_contract": {
+    "connections": [
+      [
+        "resetButton.signal",
+        "controller.reset"
+      ],
+      [
+        "entrySensor.signal",
+        "controller.entry"
+      ],
+      [
+        "qrReader.signal",
+        "controller.qr"
+      ],
+      [
+        "controller.manifest",
+        "manifestSource.access"
+      ],
+      [
+        "controller.divert",
+        "diverter.signal"
+      ],
+      [
+        "exitSensors.signal",
+        "controller.exitObservation"
+      ]
+    ],
+    "transitions": [
+      {
+        "source": "entry",
+        "target": "available",
+        "trigger": null,
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "available",
+        "target": "processing",
+        "trigger": "PackageDetected",
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "processing",
+        "target": "available",
+        "trigger": "CycleConfirmed",
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "processing",
+        "target": "blocked",
+        "trigger": "CycleFailed",
+        "guard": null,
+        "effect": null,
+        "declaredName": null
+      },
+      {
+        "source": "blocked",
+        "target": "available",
+        "trigger": "ResetRequested",
+        "guard": [
+          "and",
+          "entrySensorClear",
+          "exitSensorsClear"
+        ],
+        "effect": "recordAcceptedReset",
+        "declaredName": null
+      },
+      {
+        "source": "blocked",
+        "target": "blocked",
+        "trigger": "ResetRequested",
+        "guard": [
+          "or",
+          [
+            "not",
+            "entrySensorClear"
+          ],
+          [
+            "not",
+            "exitSensorsClear"
+          ]
+        ],
+        "effect": "recordRejectedReset",
+        "declaredName": null
+      }
+    ]
+  },
+  "reset_truth_table": [
+    {
+      "entry_clear": false,
+      "exits_clear": false,
+      "imported": {
+        "accepted": false,
+        "rejected": true
+      },
+      "reimported": {
+        "accepted": false,
+        "rejected": true
+      }
+    },
+    {
+      "entry_clear": false,
+      "exits_clear": true,
+      "imported": {
+        "accepted": false,
+        "rejected": true
+      },
+      "reimported": {
+        "accepted": false,
+        "rejected": true
+      }
+    },
+    {
+      "entry_clear": true,
+      "exits_clear": false,
+      "imported": {
+        "accepted": false,
+        "rejected": true
+      },
+      "reimported": {
+        "accepted": false,
+        "rejected": true
+      }
+    },
+    {
+      "entry_clear": true,
+      "exits_clear": true,
+      "imported": {
+        "accepted": true,
+        "rejected": false
+      },
+      "reimported": {
+        "accepted": true,
+        "rejected": false
+      }
+    }
+  ],
+  "export_tokens_equal_after_reimport": true,
+  "representations_checked": false,
+  "physical_validation": false,
+  "zip_restore": {
+    "project": "923ec1c9-0b17-43a8-98e6-57727a9b741f",
+    "contract_equal": true,
+    "upload_ui_navigation": "timeout; project creation confirmed by API"
+  }
+}

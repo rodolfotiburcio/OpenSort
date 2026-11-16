@@ -24,6 +24,8 @@ Mapa de trabajo:
 - `tests/`: pruebas de dominio, recuperación, simulación y API con `unittest`,
   ejecutables también mediante `pytest`.
 - `model/opensort.sysml`: modelo lógico de interfaces y estados de V1.
+- `infra/syson/`: entorno gráfico local opcional; `model/syson/` guarda evidencia
+  del intercambio. La base no se versiona y no hay sincronización automática.
 - `docs/estacion-v1.html` y `docs/pizarra-v1.html`: vistas manuales del modelo.
 - `docs/adr/`: decisiones de arquitectura; el ADR 001 define la identidad QR.
 
@@ -67,7 +69,8 @@ Para cambios de lógica o API, ejecuta las pruebas pertinentes y la suite al cer
 Añade pruebas de regresión cuando cambie comportamiento. Para cambios solo de
 documentación, verifica enlaces, rutas y comandos afectados. Para cambios visuales,
 usa `uv run opensort --web` y comprueba el flujo afectado en navegador; informa si
-esa comprobación no estuvo disponible. No hay linter ni validador SysML configurado:
+esa comprobación no estuvo disponible. La suite Python no incluye un linter ni
+validador SysML. La evidencia de comprobación con SysON está en `model/syson/`;
 no atribuyas esos resultados a `pytest`.
 
 ## Entrega y continuidad
@@ -85,9 +88,10 @@ de herramientas usadas. No incluyas credenciales o datos reales de paquetes.
 ## Skills, agentes y MCP
 
 Las skills del repositorio están en `.agents/skills/`: `opensort-simulator`,
-`opensort-web` y `opensort-model`. Carga la que corresponda a la tarea. Los perfiles
-de revisión y análisis de modelo están en `.codex/agents/`; úsalos cuando se solicite
-delegación. Un único agente puede realizar el trabajo habitual.
+`opensort-web`, `opensort-model` y `opensort-syson`. Carga la que corresponda a la
+tarea. Los perfiles de revisión y análisis de modelo están en `.codex/agents/`;
+úsalos cuando se solicite delegación. Un único agente puede realizar el trabajo
+habitual.
 
 Consulta `docs/ai-development.md` para ejemplos y `docs/mcp.md` para conexiones
 opcionales. Los servidores declarados en `.codex/config.toml` están desactivados.

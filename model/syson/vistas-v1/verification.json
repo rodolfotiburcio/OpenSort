@@ -1,0 +1,88 @@
+{
+  "syson": "v2026.11.0",
+  "model_commit": "2b8e6f2",
+  "source_sha256": "b73754855b96dc0b1261301846f554ea7cac1d5966a88adfc6c6b69c4aa1b8ea",
+  "project": {
+    "project": "2d958ce9-4b4e-495d-8160-bd0e18dda527",
+    "context": "e2dc8cd7-67c3-4e7f-8ca4-b16a8fbf149f"
+  },
+  "representations": [
+    {
+      "id": "db5332d9-e86d-4d28-b8d1-fc16f60dcf87",
+      "label": "01 Componentes e interfaces",
+      "ports": 12,
+      "edges": 6,
+      "nodes": 7
+    },
+    {
+      "id": "5bd8da4a-6085-49c1-83a9-e63dc18a49a7",
+      "label": "02 Ciclo de clasificación",
+      "ports": 0,
+      "edges": 17,
+      "nodes": 15
+    },
+    {
+      "id": "5953bfd4-7f1d-4baf-8167-6002ced7693e",
+      "label": "03 Estados y rearme",
+      "ports": 0,
+      "edges": 5,
+      "nodes": 3
+    }
+  ],
+  "checks": {
+    "all_original_semantic_elements_unchanged": true,
+    "connections_and_state_transitions_unchanged": true,
+    "zip_integrity": true
+  },
+  "date": "2026-11-15",
+  "restoration": {
+    "project": "b427150c-65ec-4c0c-a5a2-527f02d3fec1",
+    "documents_equivalent_after_id_remapping": true,
+    "diagram_geometry_identical": true,
+    "rendered": [
+      {
+        "label": "01 Componentes e interfaces",
+        "nodes": 19,
+        "edges": 6
+      },
+      {
+        "label": "02 Ciclo de clasificación",
+        "nodes": 15,
+        "edges": 17
+      },
+      {
+        "label": "03 Estados y rearme",
+        "nodes": 3,
+        "edges": 5
+      }
+    ],
+    "javascript_errors": []
+  },
+  "text_reimport": {
+    "project": "c574777a-8a61-4b07-bec8-79b892ca1a83",
+    "import": {
+      "data": {
+        "uploadDocument": {
+          "__typename": "UploadDocumentSuccessPayload",
+          "id": "3b820166-fc46-4c2b-aa6a-5dc7309c657b",
+          "report": ""
+        }
+      }
+    },
+    "connections_and_states_equal": true,
+    "view_usages": 3,
+    "graphical_representations": 0
+  },
+  "semantic_document_sha256_without_views": {
+    "before": "cd5100e453a2c574485632472045db6959f021531e551798adcd3b267f21342c",
+    "after": "cd5100e453a2c574485632472045db6959f021531e551798adcd3b267f21342c"
+  },
+  "sha256": {
+    "opensort-vistas.zip": "d98700be83ce47939c1286f31abbb190695b67369455cb47a853e0a5f27a40a3",
+    "opensort-vistas.sysml": "db82264fab827d2015273d79d70dadfaada872c8aab78ffe59c2e5d1a756998a",
+    "restored-project.zip": "67551ae7c93dc0dfb8cf4de329b930f22bba6a35ec6947bf338f87c32569bebe",
+    "01-componentes.png": "ad616c2c77f85201fe65056d781ca786985af288e51a07568da9d6c42e85bcc1",
+    "02-ciclo.png": "20577bdd5d635f3534f4cb319428564caeba7b69ac877c4a1c3fdcedfcd07102",
+    "03-estados.png": "1a5655c61805d089d10268c14e64263f67d45064daf35c83d16ccfbfd42ae6ea"
+  }
+}

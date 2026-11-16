@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SysON: validar configuración",
+      "type": "process",
+      "command": "docker",
+      "args": ["compose", "-f", "infra/syson/compose.yaml", "config", "--quiet"],
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": []
+    },
+    {
+      "label": "SysON: iniciar",
+      "type": "process",
+      "command": "docker",
+      "args": ["compose", "-f", "infra/syson/compose.yaml", "up", "-d", "--wait", "--wait-timeout", "180"],
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": []
+    },
+    {
+      "label": "SysON: estado",
+      "type": "process",
+      "command": "docker",
+      "args": ["compose", "-f", "infra/syson/compose.yaml", "ps"],
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": []
+    },
+    {
+      "label": "SysON: logs",
+      "type": "process",
+      "command": "docker",
+      "args": ["compose", "-f", "infra/syson/compose.yaml", "logs", "--tail", "100"],
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": []
+    },
+    {
+      "label": "SysON: detener conservando datos",
+      "type": "process",
+      "command": "docker",
+      "args": ["compose", "-f", "infra/syson/compose.yaml", "down"],
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": []
+    }
+  ]
+}

@@ -32,6 +32,24 @@ Tras un fallo, la estación permanece bloqueada. Confirma la inspección y el de
 
 El motor y los tiempos se ejecutan en Python; el navegador dibuja su estado. Las pestañas comparten una estación en memoria: recargar conserva la sesión, reiniciar el servidor la borra. Si se pierde la conexión se deshabilitan los controles; el motor del servidor sigue su estado actual. La geometría es ilustrativa, con un paquete por ciclo y sin conexión a hardware. Usa `Ctrl+C` en la terminal para detener el servidor.
 
+## Modelado gráfico con SysON
+
+El entorno opcional usa Docker Compose y guarda los modelos en un volumen de
+PostgreSQL. Desde la raíz:
+
+```bash
+docker compose -f infra/syson/compose.yaml up -d --wait --wait-timeout 180
+```
+
+Abre <http://localhost:8080> cuando termine el arranque. Consulta la
+[guía de SysON](infra/syson/README.md) para importar el modelo, conservar versiones,
+respaldar y detener los servicios sin perder datos. Incluye tareas de VS Code.
+El simulador Python funciona sin Docker; no hay sincronización automática entre
+SysON y los archivos del repositorio.
+
+Las [tres vistas gráficas de V1](model/syson/vistas-v1/README.md) incluyen el
+proyecto completo para recuperar componentes e interfaces, ciclo y estados en SysON.
+
 ## Continuar el proyecto
 
 - [Estado y siguiente tarea](docs/status.md)
@@ -41,8 +59,8 @@ El motor y los tiempos se ejecutan en Python; el navegador dibuja su estado. Las
 
 ## Desarrollo con inteligencia artificial
 
-El repositorio incluye [instrucciones para agentes](AGENTS.md), tres skills de
-proyecto para simulador, web y modelo, y dos perfiles de Codex para revisión y
+El repositorio incluye [instrucciones para agentes](AGENTS.md), cuatro skills de
+proyecto para simulador, web, modelo y SysON, y dos perfiles de Codex para revisión y
 análisis de contratos. La [guía de desarrollo con IA](docs/ai-development.md)
 explica cómo usarlos, pedir tareas verificables y mantener contexto entre sesiones.
 
