@@ -39,4 +39,15 @@ El motor y los tiempos se ejecutan en Python; el navegador dibuja su estado. Las
 - [Modelo y criterios de V0](docs/simulator.md)
 - [ADR 001 — Identidad y destino del paquete](docs/adr/0001-qr-package-id.md)
 
+## Desarrollo con inteligencia artificial
+
+El repositorio incluye [instrucciones para agentes](AGENTS.md), tres skills de
+proyecto para simulador, web y modelo, y dos perfiles de Codex para revisión y
+análisis de contratos. La [guía de desarrollo con IA](docs/ai-development.md)
+explica cómo usarlos, pedir tareas verificables y mantener contexto entre sesiones.
+
+Las [conexiones MCP opcionales](docs/mcp.md) permiten consultar documentación o
+GitHub. Se incluyen desactivadas y sin credenciales; el desarrollo local puede
+continuar con los comandos anteriores.
+
 El código y la documentación se publican bajo la [licencia MIT](LICENSE).
